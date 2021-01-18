@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">AndroidLearn</string>
+    <!--    在代码中通过R.string.app_name可以获得该字符串的引用
+        在XML中通过@string/app_name可以获得该字符串的引用
+-->
+</resources>

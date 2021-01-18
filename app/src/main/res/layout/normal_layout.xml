@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NormalActivity">
+<!--    <include layout="@layout/title"/>-->
+    <com.example.androidlearn.TitleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <!--TextView:在界面上显示一段文本信息-->
+    <TextView android:id="@+id/text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:textColor="#00ff00"
+        android:text="This is TextView"/>
+
+    <!--Button 按钮-->
+    <Button android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="Button"/>
+
+    <!--EditText 允许用户在控件里输入和编辑内容  editText.getText().toString()获得内容-->
+    <EditText android:id="@+id/edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:hint="Type something here"/>
+
+    <!--ImageView 展示图片 动态修改 imageView.setImageResource(R.drawable.img_2)-->
+    <ImageView android:id="@+id/image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_1"/>
+
+    <!--ProgressBar 显示一个进度条
+    通过代码设置控件的可见性 setVisibility() 可以传入View.VISIBLE View.INVISIBLE View.GONE
+    getVisibility() getProgress() setProgress()-->
+    <ProgressBar android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="100"/>
+
+
+
+</LinearLayout>

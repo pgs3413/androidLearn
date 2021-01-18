@@ -1,0 +1,4 @@
+include ':broadcasttest'
+include ':news'
+include ':app'
+rootProject.name = "AndroidLearn"

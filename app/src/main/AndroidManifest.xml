@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.androidlearn">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AndroidLearn">
+        <activity android:name=".PadActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".RecyclerViewActivity" />
+        <activity android:name=".Normal3Activity" />
+        <activity android:name=".Normal2Activity" />
+        <activity
+            android:name=".DialogActivity"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity android:name=".NormalActivity" />
+        <activity android:name=".ThirdActivity">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.VIEW"/> -->
+            <!-- <category android:name="android.intent.category.DEFAULT"/> -->
+            <!-- <data android:scheme="http"/> -->
+            <!-- &lt;!&ndash; geo 地理位置 tel 拨打电话   &ndash;&gt; -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity android:name=".SecondActivity">
+            <intent-filter>
+                <action android:name="com.example.androidlearn.ACTION_START" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.example.androidlearn.MY_CATEGORY" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".FirstActivity"
+            android:label="This is FirstActivity">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

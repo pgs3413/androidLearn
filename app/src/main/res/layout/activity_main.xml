@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+<!--    <include layout="@layout/title"/>-->
+<com.example.androidlearn.TitleLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+    <Button android:id="@+id/start_normal_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start NormalActivity"/>
+
+    <Button android:id="@+id/start_normal3_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Normal3Activity"/>
+
+    <Button android:id="@+id/start_dialog_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start DialogActivity"/>
+    <Button android:id="@+id/start_recycler_view_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start RecyclerViewActivity"/>
+    <Button android:id="@+id/start_chat_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start ChatActivity"/>
+</LinearLayout>

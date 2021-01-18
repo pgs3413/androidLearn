@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+1.LinearLayout 线性布局
+    android:orientation android:layout_gravity android:layout_weight
+-->
+<!--2.RelativeLayout 相对布局 通过相对定位的方式让控件出现在布局的任何位置
+    相对父布局定位 android:layout_alignParentTop="true"....
+-->
+<!--相对控件定位-->
+<!--android:layout_alignRight 让一个控件的右边缘和另一个控件的右边缘对齐-->
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent">-->
+<!--    <Button android:id="@+id/Button3"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:text="Button 3"/>-->
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_above="@id/Button3"-->
+<!--        android:layout_toLeftOf="@id/Button3"-->
+<!--        android:text="Button 1"/>-->
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_above="@id/Button3"-->
+<!--        android:layout_toRightOf="@id/Button3"-->
+<!--        android:text="Button 2"/>-->
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/Button3"-->
+<!--        android:layout_toLeftOf="@id/Button3"-->
+<!--        android:text="Button 4"/>-->
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/Button3"-->
+<!--        android:layout_toRightOf="@id/Button3"-->
+<!--        android:text="Button 5"/>-->
+<!--</RelativeLayout>-->
+
+<!--3.FrameWork 帧布局 默认摆放在布局的左上角-->
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent">-->
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="This is TextView"/>-->
+<!--    <ImageView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="right"-->
+<!--        android:src="@mipmap/ic_launcher"/>-->
+<!--    -->
+<!--</FrameLayout>-->
+
+<!--4.百分比布局 PercentFrameLayout PercentRelativeLayout-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Normal3Activity">
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
