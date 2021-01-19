@@ -1,3 +1,7 @@
+include ':readcontacts'
+include ':runtimepermission'
+include ':databasetest'
+include ':filepersistence'
 include ':broadcasttest'
 include ':news'
 include ':app'
