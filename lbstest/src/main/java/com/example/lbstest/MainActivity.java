@@ -15,6 +15,13 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +30,19 @@ public class MainActivity extends AppCompatActivity {
 
     public LocationClient mLocationClient;
     private TextView positionText;
+    private MapView mapView;
+    private BaiduMap baiduMap;
+    private boolean isFirstLocate=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         positionText=(TextView)findViewById(R.id.position_text_view);
+        mapView=(MapView)findViewById(R.id.bmapView);
+        baiduMap=mapView.getMap();
+        baiduMap.setMyLocationEnabled(true);
         //设置LocationClient
         mLocationClient=new LocationClient(getApplicationContext());
         mLocationClient.registerLocationListener(new MyLocationListener());//获得定位后回调listener
@@ -59,16 +73,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void initLocation(){
         LocationClientOption option=new LocationClientOption();
-//        option.setLocationMode(LocationClientOption.LocationMode.Device_Sensors);
-        option.setScanSpan(2000);
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        option.setCoorType("bd09ll");
+        option.setOpenGps(true);
+        option.setScanSpan(1000);
+        option.setNeedDeviceDirect(true);
         option.setIsNeedAddress(true);
         mLocationClient.setLocOption(option);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mLocationClient.stop();
+        mapView.onDestroy();
+        baiduMap.setMyLocationEnabled(false);
     }
 
     @Override
@@ -107,7 +138,29 @@ public class MainActivity extends AppCompatActivity {
         }else {
             currentPosition.append(bdLocation.getLocType());
         }
+        String coorType = bdLocation.getCoorType();
+        currentPosition.append("\ncoorType：").append(coorType).append("\n");
         positionText.setText(currentPosition);
+        navigateTo(bdLocation);
         }
+    }
+
+
+    private void navigateTo(BDLocation location){
+        if(isFirstLocate){
+            //让地图移动到定位的经纬度
+            LatLng ll=new LatLng(location.getLatitude(),location.getLongitude());
+            MapStatusUpdate update= MapStatusUpdateFactory.newLatLng(ll);
+            baiduMap.animateMapStatus(update);
+            update=MapStatusUpdateFactory.zoomTo(16f);
+            baiduMap.animateMapStatus(update);
+            isFirstLocate=false;
+        }
+        //显示设备并跟随设备移动
+        MyLocationData.Builder builder=new MyLocationData.Builder();
+        builder.latitude(location.getLatitude());
+        builder.longitude(location.getLongitude());
+        MyLocationData locationData=builder.build();
+        baiduMap.setMyLocationData(locationData);
     }
 }

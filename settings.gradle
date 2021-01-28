@@ -1,3 +1,4 @@
+include ':materialtest'
 include ':lbstest'
 include ':downloadtest'
 include ':servicetest'
