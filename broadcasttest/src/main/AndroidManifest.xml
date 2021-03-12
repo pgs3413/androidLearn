@@ -27,14 +27,15 @@
             <intent-filter android:priority="10">
                 <action android:name="com.example.broadcasttest.MY_BROADCAST" />
             </intent-filter>
-        </receiver> <!-- <receiver -->
-        <!-- android:name=".BootCompleteReceiver" -->
-        <!-- android:enabled="true" -->
-        <!-- android:exported="true"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.BOOT_COMPLETED"/> -->
-        <!-- </intent-filter> -->
-        <!-- </receiver> -->
+        </receiver>
+         <receiver
+         android:name=".BootCompleteReceiver"
+         android:enabled="true"
+         android:exported="true">
+         <intent-filter>
+         <action android:name="android.intent.action.BOOT_COMPLETED"/>
+         </intent-filter>
+         </receiver>
         <receiver
             android:name=".MyBroadcastReceiver"
             android:enabled="true"

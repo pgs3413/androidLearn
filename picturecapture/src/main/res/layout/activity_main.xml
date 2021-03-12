@@ -15,6 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Choose from Album"/>
+    <Button android:id="@+id/choose_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose video"/>
     <ImageView android:id="@+id/picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

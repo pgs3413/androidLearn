@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         option.setCoorType("bd09ll");
         option.setOpenGps(true);
-        option.setScanSpan(1000);
+        option.setScanSpan(2000);
         option.setNeedDeviceDirect(true);
         option.setIsNeedAddress(true);
         mLocationClient.setLocOption(option);
@@ -140,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
         }
         String coorType = bdLocation.getCoorType();
         currentPosition.append("\ncoorType：").append(coorType).append("\n");
+            Log.i("data", "onReceiveLocation: "+currentPosition);
         positionText.setText(currentPosition);
         navigateTo(bdLocation);
         }

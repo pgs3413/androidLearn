@@ -1,4 +1,5 @@
-include ':materialtest'
+include ':materialdesign'
+include ':test01'
 include ':lbstest'
 include ':downloadtest'
 include ':servicetest'

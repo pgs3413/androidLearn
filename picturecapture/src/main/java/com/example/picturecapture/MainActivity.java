@@ -17,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -26,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -42,7 +44,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button take_photo = (Button) findViewById(R.id.take_photo);
         Button chooseFromAlbum = (Button) findViewById(R.id.choose_from_album);
+        Button chooseVideo=(Button)findViewById(R.id.choose_video);
         pictureView = (ImageView) findViewById(R.id.picture);
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
         take_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,31 +72,20 @@ public class MainActivity extends AppCompatActivity {
         chooseFromAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    Log.d("data", "onClick: 请求权限");
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                } else {
-                    openAlbum();
-                }
+                openAlbum();
             }
+        });
+        chooseVideo.setOnClickListener(v->{
+            openVideo();
         });
     }
 
-    private void openAlbum() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        startActivityForResult(intent, 2);
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d("data", "onRequestPermissionsResult");
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openAlbum();
                 } else {
                     Toast.makeText(MainActivity.this, "You denied the permission", Toast.LENGTH_SHORT).show();
                 }
@@ -100,12 +96,23 @@ public class MainActivity extends AppCompatActivity {
 
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_.jpg";
+        String imageFileName = "test_" + timeStamp + "_.jpg";
+
         File storageDir = getExternalCacheDir();
         File image = new File(storageDir, imageFileName);
+
+//        String cameraPath=Environment.getExternalStorageDirectory()+File.separator+Environment.DIRECTORY_DCIM+File.separator
+//                +"Camera"+File.separator;
+//        File image = new File(cameraPath,imageFileName);//保存到系统相册
+
+//        String path=Environment.getExternalStorageDirectory()+File.separator+Environment.DIRECTORY_PICTURES+File.separator
+//                +"test"+File.separator;
+//        File image=new File(path,imageFileName);
+
         return image;
     }
 
+    //Bitmap，即位图。它本质上就是一张图片的内容在内存中的表达形式
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -118,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
         //获取完整图
         if (requestCode == 1 && resultCode == RESULT_OK) {
             try {
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,photoURI));
                 Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(photoURI));
                 pictureView.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
@@ -125,53 +133,37 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if(requestCode==2 && resultCode==RESULT_OK){
-            Log.d("data", "onActivityResult: 回调");
-            handleImage(data);
+            if(data!=null){
+                Uri uri=data.getData();
+                Bitmap bitmap=getBitmapFromUri(uri);
+                pictureView.setImageBitmap(bitmap);
+            }
         }
     }
 
-    private void handleImage(Intent data){
-        String imagePath=null;
-        Uri uri=data.getData();
-        if(DocumentsContract.isDocumentUri(this,uri)){
-            Log.d("data", "handleImage: document");
-            String docId=DocumentsContract.getDocumentId(uri);
-            if("com.android.providers.media.documents".equals(uri.getAuthority())){
-                Log.d("data", "handleImage: document: media");
-                String id=docId.split(":")[1];
-                String selection=MediaStore.Images.Media._ID+"="+id;
-                imagePath=getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,selection);
-            }else if("com.android.providers.downloads.documents".equals(uri.getAuthority())){
-                Log.d("data", "handleImage: document: downloads");
-                Uri contentUri= ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),Long.valueOf(docId));
-                imagePath=getImagePath(contentUri,null);
-            }
-        }else if("content".equalsIgnoreCase(uri.getScheme())){
-            Log.d("data", "handleImage: content");
-            imagePath=getImagePath(uri,null);
-        }else if("file".equalsIgnoreCase(uri.getScheme())){
-            Log.d("data", "handleImage: file");
-            imagePath=uri.getPath();
-        }
-        displayImage(imagePath);
+    private void openAlbum() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        startActivityForResult(intent, 2);
     }
-    private String getImagePath(Uri uri,String selection){
-        String path=null;
-        Cursor cursor =getContentResolver().query(uri,null,selection,null,null);
-        if(cursor!=null){
-            if(cursor.moveToFirst()){
-                path=cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-            }
-            cursor.close();
-        }
-        return path;
+
+    private void openVideo(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("video/*");
+        startActivityForResult(intent, 3);
     }
-    private void displayImage(String path){
-        if(path!=null){
-            Bitmap bitmap=BitmapFactory.decodeFile(path);
-            pictureView.setImageBitmap(bitmap);
-        }else {
-            Toast.makeText(MainActivity.this,"failed to get image",Toast.LENGTH_SHORT).show();
+
+    private Bitmap getBitmapFromUri(Uri uri){
+        Bitmap bitmap=null;
+        try{
+            ParcelFileDescriptor descriptor = getContentResolver().openFileDescriptor(uri,"r");
+            bitmap = BitmapFactory.decodeFileDescriptor(descriptor.getFileDescriptor());
+        }catch (Exception e){
+            e.printStackTrace();
         }
+        return bitmap;
     }
+
 }
